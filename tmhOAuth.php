@@ -506,16 +506,18 @@ class tmhOAuth {
    * @param string $method the HTTP method being used. e.g. POST, GET, HEAD etc
    * @param string $url the request URL without query string parameters
    * @param array $params the request parameters as an array of key=value pairs. Default empty array
+   * @param array $body
    * @param string $useauth whether to use authentication when making the request. Default true
    * @param string $multipart whether this request contains multipart data. Default false
    * @param array $headers any custom headers to send with the request. Default empty array
    * @return int the http response code for the request. 0 is returned if a connection could not be made
    */
-  public function request($method, $url, $params=array(), $useauth=true, $multipart=false, $headers=array()) {
+  public function request($method, $url, $params=array(), $body=null, $useauth=true, $multipart=false, $headers=array()) {
     $options = array(
       'method'    => $method,
       'url'       => $url,
       'params'    => $params,
+      'body'      => $body,
       'with_user' => true,
       'multipart' => $multipart,
       'headers'   => $headers
@@ -781,8 +783,12 @@ class tmhOAuth {
       $this->request_settings['url'] = $this->request_settings['url'] . '?' . $this->request_settings['querystring'];
     } elseif ($this->request_settings['method'] == 'POST' || $this->request_settings['method'] == 'PUT') {
       $postfields = array();
-      if (isset($this->request_settings['postfields']))
+      if (isset($this->request_settings['body'])) {
+        curl_setopt($c, CURLOPT_POST, true);
+        $postfields = json_encode($this->request_settings['body']);
+      } else if (isset($this->request_settings['postfields'])) {
         $postfields = $this->request_settings['postfields'];
+      }
 
       curl_setopt($c, CURLOPT_POSTFIELDS, $postfields);
     }
