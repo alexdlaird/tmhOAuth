@@ -1,11 +1,16 @@
 {
-  "name": "themattharris/tmhoauth",
+  "name": "sparkcentral/tmhoauth",
   "description": "An OAuth library written in PHP by @themattharris",
   "license": "Apache-2.0",
   "authors": [
     {
       "name": "themattharris",
       "email": "matt@themattharris.com",
+      "role": "Developer"
+    },
+    {
+      "name": "Alex Laird",
+      "email": "alexlaird@sparkcentral.com",
       "role": "Developer"
     }
   ],
